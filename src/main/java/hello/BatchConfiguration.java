@@ -69,7 +69,8 @@ public class BatchConfiguration {
 
     // tag::jobstep[]
     @Bean
-    public Job importUserJob(final JobBuilderFactory jobs, final Step s1, final JobExecutionListener listener) {
+    public Job importUserJob(final JobBuilderFactory jobs, final Step s1,
+            final JobExecutionListener listener) {
         return jobs.get("importUserJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
@@ -80,7 +81,8 @@ public class BatchConfiguration {
 
     @Bean
     public Step step1(final StepBuilderFactory stepBuilderFactory, final ItemReader<Person> reader,
-            final ItemWriter<Person> writer, final ItemProcessor<Person, Person> processor) {
+            final ItemWriter<Person> writer, final ItemProcessor<Person, Person>
+            processor) {
         return stepBuilderFactory.get("step1")
                 .<Person, Person> chunk(5)
                 .reader(reader)

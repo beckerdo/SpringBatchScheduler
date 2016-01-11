@@ -3,36 +3,38 @@
 package hello;
 
 import java.util.Date;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class BasicScheduler {
+    private static final Logger log = LoggerFactory.getLogger(BasicScheduler.class);
 
-    @Autowired
-    private JobLauncher jobLauncher;
+    // @Autowired
+    // private JobLauncher jobLauncher;
+    //
+    // @Autowired
+    // private Job job;
 
-    @Autowired
-    private Job job;
-
-    @Scheduled(cron = "*/5 * * * * MON-FRI")
+    // @Scheduled(cron = "*/5 * * * * MON-FRI")
+    @Scheduled(cron = "*/5 * * * * ?")
     public void run() {
         try {
             final String dateParam = new Date().toString();
-            final JobParameters param =
-                    new JobParametersBuilder().addString("date", dateParam).toJobParameters();
+            new JobParametersBuilder().addString("date", dateParam).toJobParameters();
 
             System.out.println(dateParam);
+            log.info("BasicScheduler running at " + dateParam);
 
-            final JobExecution execution = this.jobLauncher.run(this.job, param);
-            System.out.println("Exit Status : " + execution.getStatus());
+            // final JobExecution execution = this.jobLauncher.run(this.job,
+            // jobParams);
+            // log.info("BasicScheduler exit status=" + execution.getStatus());
+
+            log.info("BasicScheduler exiting " + dateParam);
         } catch (final Exception e) {
             e.printStackTrace();
         }
